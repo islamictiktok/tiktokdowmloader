@@ -18,16 +18,17 @@ def download_videos():
     save_path = os.path.join(DOWNLOAD_DIR, folder_id)
     os.makedirs(save_path, exist_ok=True)
 
-    with TikTokApi() as api:
-        videos = api.trending(count=200)
-        for i, video in enumerate(videos):
-            try:
-                url = video.video.download_url
-                content = requests.get(url).content
-                with open(f"{save_path}/video_{i+1}.mp4", "wb") as f:
-                    f.write(content)
-            except:
-                continue
+    api = TikTokApi()
+    videos = api.trending(count=200)
+
+    for i, video in enumerate(videos):
+        try:
+            url = video.video.download_url
+            content = requests.get(url).content
+            with open(f"{save_path}/video_{i+1}.mp4", "wb") as f:
+                f.write(content)
+        except:
+            continue
 
     zip_path = f"{save_path}.zip"
     with zipfile.ZipFile(zip_path, 'w') as zipf:
@@ -36,6 +37,6 @@ def download_videos():
 
     return send_file(zip_path, as_attachment=True)
 
-# التعديل هنا: تحديد المنفذ 80 وتهيئة التطبيق ليشتغل على Render
+# التعديل لتشغيل السيرفر على Render
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=80)  # تحديد المنفذ 80
+    app.run(debug=True, host='0.0.0.0', port=80)
