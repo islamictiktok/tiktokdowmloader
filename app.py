@@ -19,15 +19,19 @@ def download_videos():
     os.makedirs(save_path, exist_ok=True)
 
     api = TikTokApi()
-    videos = api.trending(count=200)
+    videos = api.trending()  # ما بنمرر count هنا حسب النسخة الجديدة
 
+    max_videos = 50  # عدد الفيديوهات اللي بننزلها
     for i, video in enumerate(videos):
+        if i >= max_videos:
+            break
         try:
             url = video.video.download_url
             content = requests.get(url).content
             with open(f"{save_path}/video_{i+1}.mp4", "wb") as f:
                 f.write(content)
-        except:
+        except Exception as e:
+            print(f"خطأ في الفيديو رقم {i+1}: {e}")
             continue
 
     zip_path = f"{save_path}.zip"
@@ -37,6 +41,5 @@ def download_videos():
 
     return send_file(zip_path, as_attachment=True)
 
-# التعديل لتشغيل السيرفر على Render
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=80)
