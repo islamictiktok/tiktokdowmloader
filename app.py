@@ -51,4 +51,6 @@ def download_videos():
         return f"حدث خطأ: {e}"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # قم بتحديد المنفذ باستخدام المتغير PORT في بيئة Render
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
