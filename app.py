@@ -19,10 +19,10 @@ def download_videos():
     try:
         # الوصول إلى API الخاصة بـ TikTok
         api = TikTokApi()
-        trending = api.trending()  # الحصول على التريندينغ
+        trending = api.trending(count=50)  # الحصول على التريندينغ
 
         max_videos = 50  # نحدد العدد الأقصى للفيديوهات
-        for i, video in enumerate(trending):  # التكرار عبر الفيديوهات
+        for i, video in enumerate(trending):  # التكرار عبر الفيديوهات مباشرة
             if i >= max_videos:
                 break
 
