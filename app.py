@@ -19,7 +19,7 @@ def download_videos():
     os.makedirs(save_path, exist_ok=True)
 
     api = TikTokApi()  # لا حاجة لاستخدام get_instance، استخدم TikTokApi مباشرة
-    trending = api.trending(count=50)  # نستخدم count هنا للحصول على عدد معين من الفيديوهات
+    trending = api.trending()  # استخدم trending() بدون count أو معلمة أخرى
 
     max_videos = 50  # نحدد العدد الأقصى للفيديوهات
     for i, video in enumerate(trending['items']):  # استخدام 'items' للحصول على الفيديوهات
