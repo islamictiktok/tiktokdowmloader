@@ -18,15 +18,15 @@ def download_videos():
     save_path = os.path.join(DOWNLOAD_DIR, folder_id)
     os.makedirs(save_path, exist_ok=True)
 
-    api = TikTokApi()
-    videos = api.trending()  # ما بنمرر count هنا حسب النسخة الجديدة
+    api = TikTokApi.get_instance()  # الطريقة الصحيحة لفتح الـ API instance
+    trending = api.trending(count=50)  # نستخدم count هنا للحصول على عدد معين من الفيديوهات
 
-    max_videos = 50  # عدد الفيديوهات اللي بننزلها
-    for i, video in enumerate(videos):
+    max_videos = 50  # نحدد العدد الأقصى للفيديوهات
+    for i, video in enumerate(trending['items']):  # استخدام 'items' للحصول على الفيديوهات
         if i >= max_videos:
             break
         try:
-            url = video.video.download_url
+            url = video['video']['downloadAddr']  # الوصول لرابط تحميل الفيديو
             content = requests.get(url).content
             with open(f"{save_path}/video_{i+1}.mp4", "wb") as f:
                 f.write(content)
